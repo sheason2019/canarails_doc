@@ -1,0 +1,29 @@
+---
+title: Canarails DEV Environment
+description: Canarails 小流量测试环境
+template: splash
+hero:
+  tagline: 一个轻量、简单、易部署的 Kubernetes 金丝雀测试环境
+  image:
+    file: ../../assets/houston.webp
+  actions:
+    - text: 了解更多
+      link: /guides/introduction/
+      icon: right-arrow
+      variant: primary
+---
+
+import { Card, CardGrid } from "@astrojs/starlight/components";
+
+## 特性
+
+<CardGrid stagger>
+  <Card title="简单">Canarails 的原理非常简单，这使得它非常易于使用</Card>
+  <Card title="轻量">Canarails 非常轻量，镜像体积不到 70MB</Card>
+  <Card title="易部署">
+    Canarails 的部署非常简单，初次使用的用户通常可以在五分钟内完成部署
+  </Card>
+  <Card title="安全">
+    Canarails 实现了一个简易的用户模块，可以为用户提供基本的权限保护
+  </Card>
+</CardGrid>
