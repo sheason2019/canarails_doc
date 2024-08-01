@@ -1,0 +1,28 @@
+name: Build & Push Image
+on:
+  workflow_call:
+    secrets:
+      DOCKER_USERNAME:
+        required: true
+      DOCKER_PASSWORD:
+        required: true
+jobs:
+  build_and_push_image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - name: setupNode
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20.8"
+      - name: build website
+        run: |
+          npm i -g pnpm
+          pnpm i
+          pnpm run build
+      - name: build and push image
+        run: |
+          docker build . -t sheason/canarails-doc:${{ github.sha }}
+          docker login --username=${{ secrets.DOCKER_USERNAME }} --password ${{ secrets.DOCKER_PASSWORD }}
+          docker push sheason/canarails-doc:${{ github.sha }}

@@ -1,0 +1,11 @@
+name: Build & Push Image
+on:
+  push:
+    branches:
+      - "master"
+jobs:
+  master_update:
+    uses: sheason2019/canarails_doc/.github/workflows/build-image.yaml@master
+    secrets:
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
