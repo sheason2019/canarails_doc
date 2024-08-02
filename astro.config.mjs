@@ -14,8 +14,11 @@ export default defineConfig({
           label: "起步",
           items: [
             // Each item here is one entry in the navigation menu.
-            { label: "简介", slug: "guides/introduction" },
-            { label: "开始使用", slug: "guides/getstart" },
+            { slug: "guides/introduction" },
+            { slug: "guides/install" },
+            { slug: "guides/getstarted" },
+            { slug: "guides/canary" },
+            { slug: "guides/use_with_git" },
           ],
         },
       ],
