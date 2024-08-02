@@ -13,3 +13,15 @@ Canarails 和核心目标之一是与类似 GitHub Actions 的 Git Pipeline 配�
 - 当合并至 master 的 pull request 更新时，构建分支内容并更新到金丝雀节点
 
 - 当 pull request 关闭时，移除金丝雀节点以节省资源
+
+## 创建授权令牌
+
+介绍如何创建授权令牌。
+
+## 使用 CURL 更新流量泳道
+
+以 GitHub Actions 为例介绍如何使用 CURL 更新 Canarails AppVariant。
+
+## 完成
+
+以 Canarails Doc 为例，展示自动化拉起金丝雀环境的成果。
