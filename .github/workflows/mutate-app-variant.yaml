@@ -1,0 +1,38 @@
+name: Mutate App Variant
+on:
+  workflow_call:
+    inputs:
+      method:
+        required: true
+        type: string
+      branchName:
+        required: true
+        type: string
+      imageName:
+        required: true
+        type: string
+    secrets:
+      AUTH_TOKEN:
+        required: true
+jobs:
+  create_app_variant:
+    if: inputs.method == 'POST'
+    runs-on: ubuntu-latest
+    steps:
+      - name: curl
+        run: |
+          curl -X POST -d '{"title": "${{ inputs.branchName }}", "imageName": "${{ inputs.imageName }}", "replicas": 1, "matches": [{"header": "x-branch-name", "value": "${{ inputs.branchName }}"}], "appId": 2}' -H 'Authorization:  ${{ secrets.AUTH_TOKEN }}' -H 'Content-Type: application/json' 'https://admin.sheason.site/api/app-variant'
+  patch_app_variant:
+    if: inputs.method == 'PATCH'
+    runs-on: ubuntu-latest
+    steps:
+      - name: curl
+        run: |
+          curl -X PATCH -d '{"imageName": "${{ inputs.imageName }}"}' -H 'Authorization: ${{ secrets.AUTH_TOKEN }}' -H 'Content-Type: application/json' 'https://admin.sheason.site/api/app-variant?title=${{ inputs.branchName }}&appId=2'
+  delete_app_variant:
+    if: inputs.method == 'DELETE'
+    runs-on: ubuntu-latest
+    steps:
+      - name: curl
+        run: |
+          curl -X DELETE -H 'Authorization: ${{ secrets.AUTH_TOKEN }}' 'https://admin.sheason.site/api/app-variant?title=${{ inputs.branchName }}&appId=2'

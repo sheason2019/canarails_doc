@@ -4,8 +4,17 @@ on:
     branches:
       - "master"
 jobs:
-  master_update:
+  build_image:
     uses: sheason2019/canarails_doc/.github/workflows/build-image.yaml@master
     secrets:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+  update_master:
+    uses: sheason2019/canarails_doc/.github/workflows/mutate-app-variant.yaml@master
+    secrets:
+      AUTH_TOKEN: ${{ secrets.AUTH_TOKEN }}
+    needs: build_image
+    with:
+      method: PATCH
+      branchName: ${{ github.ref_name }}
+      imageName: ${{ needs.build_image.outputs.imageName }}
