@@ -2,11 +2,11 @@
 title: 与 Git 一起使用
 ---
 
-Canarails 和核心目标之一是与类似 GitHub Actions 的 Git Pipeline 配合使用以实现自动化运维。
+Canarails 和核心目标之一是与类似 GitHub Actions 的 Git Pipeline 配合使用以实现自动化部署。
 
 ## 创建授权令牌
 
-要通过 Canarails 结合 Git Pipeline 实现自动化运维，我们首先需要创建一个授权令牌以获得在流水线中操作 Canarails 资源的权限。
+要通过 Canarails 结合 Git Pipeline 实现自动化部署，我们首先需要创建一个授权令牌以获得在流水线中操作 Canarails 资源的权限。
 
 首先进入 Canarails 控制台，点击 `Canarails` 左侧的菜单按钮，点击 `设置` 以进入设置页面。
 
@@ -172,16 +172,94 @@ jobs:
 
 当我们创建合并至 master 分支的 PR 时，我们需要创建金丝雀环境以供预览。
 
-TODO
+对应的流水线配置文件如下所示：
+
+```yaml
+# create_pull_request.yaml
+name: Create PullRequest
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+    branches:
+      - master
+jobs:
+  build_image:
+    uses: sheason2019/canarails_doc/.github/workflows/build-image.yaml@master
+    secrets:
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+  create_app_variant:
+    uses: sheason2019/canarails_doc/.github/workflows/mutate-app-variant.yaml@master
+    secrets:
+      AUTH_TOKEN: ${{ secrets.AUTH_TOKEN }}
+    needs: build_image
+    with:
+      method: POST
+      branchName: ${{ github.head_ref }}
+      imageName: ${{ needs.build_image.outputs.imageName }}
+```
 
 #### 更新 PR
 
 当我们更新合并至 master 分支的 PR 时，我们需要更新金丝雀环境，使其与最新的分支内容保持一致。
 
-TODO
+对应的流水线配置文件内容如下所示：
+
+```yaml
+# update_pull_request.yaml
+name: Update PullRequest
+on:
+  pull_request:
+    types:
+      - synchronize
+    branches:
+      - master
+jobs:
+  build_image:
+    uses: sheason2019/canarails_doc/.github/workflows/build-image.yaml@master
+    secrets:
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+  update_app_variant:
+    uses: sheason2019/canarails_doc/.github/workflows/mutate-app-variant.yaml@master
+    secrets:
+      AUTH_TOKEN: ${{ secrets.AUTH_TOKEN }}
+    needs: build_image
+    with:
+      method: PATCH
+      branchName: ${{ github.head_ref }}
+      imageName: ${{ needs.build_image.outputs.imageName }}
+```
 
 #### 关闭 PR
 
 当我们关闭合并至 master 分支的 PR 时，我们需要删除金丝雀环境，以节省资源开销。
 
-TODO
+对应的流水线配置文件内容如下所示：
+
+```yaml
+# close_pull_request.yaml
+name: Close PullRequest
+on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - master
+jobs:
+  delete_app_variant:
+    uses: sheason2019/canarails_doc/.github/workflows/mutate-app-variant.yaml@master
+    secrets:
+      AUTH_TOKEN: ${{ secrets.AUTH_TOKEN }}
+    with:
+      method: DELETE
+      branchName: ${{ github.head_ref }}
+```
+
+## 完成配置
+
+以上就是使用 GitHub Actions 配合 Canarails 实现自动化部署的全部步骤。
+
+现在，您应该可以通过向项目的 master 分支推送内容实现项目的自动部署，或是通过创建指向 master 分支的 Pull Request 以自动构建金丝雀环境，供内部人员进行测试和预览。
