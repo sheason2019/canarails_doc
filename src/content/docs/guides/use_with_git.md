@@ -97,7 +97,7 @@ on:
         required: true
         type: string
       imageName:
-        required: true
+        required: false
         type: string
     secrets:
       AUTH_TOKEN:
@@ -109,7 +109,7 @@ jobs:
     steps:
       - name: curl
         run: |
-          curl -X POST -d '{"title": "${{ inputs.branchName }}", "imageName": "${{ inputs.imageName }}", "replicas": 1, "matches": [{"header": "x-branch-name", "value": "${{ inputs.branchName }}"}], "appId": 2}' -H 'Authorization:  ${{ secrets.AUTH_TOKEN }}' -H 'Content-Type: application/json' 'https://admin.sheason.site/api/app-variant'
+          curl -X POST -d '{"title": "${{ inputs.branchName }}", "imageName": "${{ inputs.imageName }}", "replicas": 1, "matches": [{"header": "x-branch-name", "value": "${{ inputs.branchName }}"}], "appId": 2, "exposePort": 80}' -H 'Authorization:  ${{ secrets.AUTH_TOKEN }}' -H 'Content-Type: application/json' 'https://admin.sheason.site/api/app-variant'
   patch_app_variant:
     if: inputs.method == 'PATCH'
     runs-on: ubuntu-latest
@@ -170,12 +170,18 @@ jobs:
 
 #### 创建 PR
 
+当我们创建合并至 master 分支的 PR 时，我们需要创建金丝雀环境以供预览。
+
 TODO
 
 #### 更新 PR
 
+当我们更新合并至 master 分支的 PR 时，我们需要更新金丝雀环境，使其与最新的分支内容保持一致。
+
 TODO
 
 #### 关闭 PR
+
+当我们关闭合并至 master 分支的 PR 时，我们需要删除金丝雀环境，以节省资源开销。
 
 TODO
