@@ -170,10 +170,12 @@ jobs:
 
 #### 创建 PR
 
+TODO
+
 #### 更新 PR
+
+TODO
 
 #### 关闭 PR
 
-## 完成
-
-以 Canarails Doc 为例，展示自动化拉起金丝雀环境的成果。
+TODO
