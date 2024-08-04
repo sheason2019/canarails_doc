@@ -6,11 +6,10 @@ on:
     branches:
       - master
 jobs:
-  update_master:
+  delete_app_variant:
     uses: sheason2019/canarails_doc/.github/workflows/mutate-app-variant.yaml@master
     secrets:
       AUTH_TOKEN: ${{ secrets.AUTH_TOKEN }}
-    needs: build_image
     with:
       method: DELETE
       branchName: ${{ github.head_ref }}

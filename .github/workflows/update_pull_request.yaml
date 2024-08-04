@@ -11,7 +11,7 @@ jobs:
     secrets:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-  update_master:
+  update_app_variant:
     uses: sheason2019/canarails_doc/.github/workflows/mutate-app-variant.yaml@master
     secrets:
       AUTH_TOKEN: ${{ secrets.AUTH_TOKEN }}
