@@ -1,0 +1,16 @@
+name: Close PullRequest
+on:
+  pull_request:
+    types:
+      - closeed
+    branches:
+      - master
+jobs:
+  update_master:
+    uses: sheason2019/canarails_doc/.github/workflows/mutate-app-variant.yaml@master
+    secrets:
+      AUTH_TOKEN: ${{ secrets.AUTH_TOKEN }}
+    needs: build_image
+    with:
+      method: DELETE
+      branchName: ${{ github.ref_name }}

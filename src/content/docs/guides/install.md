@@ -109,7 +109,7 @@ spec:
       targetPort: 3000
 ```
 
-下面这一部分是 Canarails 的 Deployment 和 HTTPRoute，需要根据需要进行修改：
+下面这一部分是 Canarails 的 Deployment 和 HTTPRoute，应根据需要进行修改：
 
 ```yaml
 apiVersion: gateway.networking.k8s.io/v1

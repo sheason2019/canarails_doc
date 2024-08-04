@@ -1,8 +1,10 @@
-name: Master Update
+name: Update PullRequest
 on:
-  push:
+  pull_request:
+    types:
+      - synchronize
     branches:
-      - "master"
+      - master
 jobs:
   build_image:
     uses: sheason2019/canarails_doc/.github/workflows/build-image.yaml@master

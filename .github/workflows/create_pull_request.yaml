@@ -1,8 +1,11 @@
-name: Master Update
+name: Create PullRequest
 on:
-  push:
+  pull_request:
+    types:
+      - opened
+      - reopened
     branches:
-      - "master"
+      - master
 jobs:
   build_image:
     uses: sheason2019/canarails_doc/.github/workflows/build-image.yaml@master
@@ -15,6 +18,6 @@ jobs:
       AUTH_TOKEN: ${{ secrets.AUTH_TOKEN }}
     needs: build_image
     with:
-      method: PATCH
+      method: POST
       branchName: ${{ github.ref_name }}
       imageName: ${{ needs.build_image.outputs.imageName }}
