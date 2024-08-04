@@ -19,5 +19,5 @@ jobs:
     needs: build_image
     with:
       method: POST
-      branchName: ${{ github.ref_name }}
+      branchName: ${{ github.head_ref }}
       imageName: ${{ needs.build_image.outputs.imageName }}

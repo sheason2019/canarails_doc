@@ -2,7 +2,7 @@ name: Close PullRequest
 on:
   pull_request:
     types:
-      - closeed
+      - closed
     branches:
       - master
 jobs:
@@ -13,4 +13,4 @@ jobs:
     needs: build_image
     with:
       method: DELETE
-      branchName: ${{ github.ref_name }}
+      branchName: ${{ github.head_ref }}
