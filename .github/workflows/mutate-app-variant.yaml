@@ -21,7 +21,7 @@ jobs:
     steps:
       - name: curl
         run: |
-          curl -X POST -d '{"title": "${{ inputs.branchName }}", "imageName": "${{ inputs.imageName }}", "replicas": 1, "matches": [{"header": "x-branch-name", "value": "${{ inputs.branchName }}"}], "appId": 2}' -H 'Authorization:  ${{ secrets.AUTH_TOKEN }}' -H 'Content-Type: application/json' 'https://admin.sheason.site/api/app-variant'
+          curl -X POST -d '{"title": "${{ inputs.branchName }}", "imageName": "${{ inputs.imageName }}", "replicas": 1, "matches": [{"header": "x-branch-name", "value": "${{ inputs.branchName }}"}], "appId": 2, "exposePort": 80}' -H 'Authorization:  ${{ secrets.AUTH_TOKEN }}' -H 'Content-Type: application/json' 'https://admin.sheason.site/api/app-variant'
   patch_app_variant:
     if: inputs.method == 'PATCH'
     runs-on: ubuntu-latest
